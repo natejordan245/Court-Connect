@@ -14,6 +14,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/MainNavigator';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { COLORS } from '../constants/colors';
 
 // Uncomment these when ready to use Firebase
 // import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -102,13 +103,11 @@ const LoginScreen = (props: LoginScreenProps) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={styles.logoContainer}>
-        <View style={styles.logo} />
-        <Text style={styles.title}>SportSync</Text>
-        <Text style={styles.subtitle}>Find courts and players near you</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>SportSync</Text>
       </View>
 
-      <View style={styles.formContainer}>
+      <View style={styles.form}>
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={[styles.input, errors.email ? styles.inputError : null]}
@@ -131,14 +130,14 @@ const LoginScreen = (props: LoginScreenProps) => {
         {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
         
         <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+          style={[styles.loginButton, loading && styles.loginButtonDisabled]}
           onPress={handleSignIn}
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="white" size="small" />
+            <ActivityIndicator color={COLORS.white} size="small" />
           ) : (
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Text style={styles.loginButtonText}>Sign In</Text>
           )}
         </TouchableOpacity>
         
@@ -156,34 +155,21 @@ const LoginScreen = (props: LoginScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: COLORS.white,
+  },
+  header: {
+    backgroundColor: COLORS.sageGreen,
     padding: 20,
-    backgroundColor: '#f5f5f5',
-  },
-  logoContainer: {
+    paddingTop: 60,
     alignItems: 'center',
-    marginBottom: 40,
   },
-  logo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#1e88e5',
-    marginBottom: 20,
-  },
-  title: {
+  headerText: {
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 20,
-  },
-  formContainer: {
-    width: '100%',
+  form: {
+    padding: 20,
   },
   label: {
     fontSize: 16,
@@ -191,37 +177,31 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.lightGrey,
     borderRadius: 8,
     padding: 15,
-    marginBottom: 16,
+    marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#ddd',
-    fontSize: 16,
+    borderColor: 'rgba(164, 117, 81, 0.3)',
   },
   inputError: {
     borderColor: '#ff6b6b',
   },
-  errorText: {
-    color: '#ff6b6b',
-    marginTop: -12,
-    marginBottom: 12,
-    fontSize: 14,
-  },
-  button: {
-    backgroundColor: '#1e88e5',
+  loginButton: {
+    backgroundColor: COLORS.clayBrown,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 10,
   },
-  buttonDisabled: {
-    backgroundColor: '#90caf9',
+  loginButtonDisabled: {
+    backgroundColor: COLORS.sageGreen,
+    opacity: 0.7,
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+  loginButtonText: {
+    color: COLORS.white,
     fontSize: 16,
+    fontWeight: 'bold',
   },
   signUpContainer: {
     flexDirection: 'row',
@@ -229,12 +209,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   signUpText: {
-    color: '#666',
-    marginRight: 5,
+    color: COLORS.grey,
   },
   signUpLink: {
-    color: '#1e88e5',
+    color: COLORS.clayBrown,
     fontWeight: 'bold',
+    marginLeft: 5,
+  },
+  errorText: {
+    color: '#ff6b6b',
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 

@@ -8,13 +8,15 @@ import {
   Alert,
   TextInput,
   ScrollView,
-  Image
+  ImageBackground
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { TabParamList } from '../types/navigation';
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { COLORS } from '../constants/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<TabParamList, 'HomeTab'>;
@@ -54,154 +56,199 @@ const HomeScreen = (props: HomeScreenProps) => {
     props.navigation.navigate('MatchTab');
   };
 
+  const handleSuggestFeature = () => {
+    setMenuVisible(false);
+    Alert.alert(
+      'Suggest a Feature',
+      'Thank you for your interest! Feature suggestions will be available soon.',
+      [{ text: 'OK', style: 'default' }]
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.welcomeText}>Welcome, {user.displayName || user.email}!</Text>
-        <TouchableOpacity style={styles.menuButton} onPress={() => setMenuVisible(true)}>
-          <View style={styles.hamburgerIcon}>
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
+    <ImageBackground 
+      source={require('../../assets/pickleball-court.jpg')}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.header}>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBar}>
+              <Ionicons name="search" size={22} color={COLORS.clayBrown} style={styles.searchIcon} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search for players..."
+                placeholderTextColor={COLORS.grey}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                returnKeyType="search"
+                onSubmitEditing={handleSearch}
+              />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity 
+                  style={styles.clearButton} 
+                  onPress={() => setSearchQuery('')}
+                >
+                  <Ionicons name="close-circle" size={20} color={COLORS.grey} />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.menuButton} onPress={() => setMenuVisible(true)}>
+            <View style={styles.hamburgerIcon}>
+              <View style={styles.hamburgerLine} />
+              <View style={styles.hamburgerLine} />
+              <View style={styles.hamburgerLine} />
+            </View>
+          </TouchableOpacity>
+        </View>
 
-      {/* Menu Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={menuVisible}
-        onRequestClose={() => setMenuVisible(false)}
-      >
-        <TouchableOpacity 
-          style={styles.modalOverlay} 
-          activeOpacity={1} 
-          onPress={() => setMenuVisible(false)}
+        {/* Menu Modal */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={menuVisible}
+          onRequestClose={() => setMenuVisible(false)}
         >
-          <View style={styles.menuContainer}>
+          <TouchableOpacity 
+            style={styles.modalOverlay} 
+            activeOpacity={1} 
+            onPress={() => setMenuVisible(false)}
+          >
+            <View style={styles.menuContainer}>
+              <TouchableOpacity 
+                style={styles.menuItem} 
+                onPress={handleSuggestFeature}
+              >
+                <Text style={styles.menuItemText}>Suggest a Feature</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.menuItem} 
+                onPress={handleSignOut}
+              >
+                <Text style={styles.menuItemText}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        <ScrollView style={styles.content}>
+          {/* Welcome Message */}
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.welcomeText}>Welcome to SportSync</Text>
+            <Text style={styles.betaText}>beta</Text>
+          </View>
+
+          {/* Quick Access Containers */}
+          <View style={styles.quickAccessContainer}>
             <TouchableOpacity 
-              style={styles.menuItem} 
-              onPress={handleSignOut}
+              style={styles.quickAccessItem}
+              onPress={navigateToMatch}
             >
-              <Text style={styles.menuItemText}>Sign Out</Text>
+              <View style={styles.quickAccessIconContainer}>
+                <Ionicons 
+                  name="people" 
+                  size={32} 
+                  color={COLORS.clayBrown}
+                  style={styles.quickAccessIconShadow}
+                />
+              </View>
+              <Text style={styles.quickAccessTitle}>Match</Text>
+              <Text style={styles.quickAccessSubtitle}>Find players to play with</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.quickAccessItem}
+              onPress={navigateToCourts}
+            >
+              <View style={styles.quickAccessIconContainer}>
+                <Ionicons 
+                  name="location" 
+                  size={32} 
+                  color={COLORS.clayBrown}
+                  style={styles.quickAccessIconShadow}
+                />
+              </View>
+              <Text style={styles.quickAccessTitle}>Courts</Text>
+              <Text style={styles.quickAccessSubtitle}>Find nearby courts</Text>
             </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </Modal>
-
-      <ScrollView style={styles.content}>
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <View style={styles.searchBar}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search for players..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              returnKeyType="search"
-              onSubmitEditing={handleSearch}
-            />
-            <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-              <Text style={styles.searchButtonText}>🔍</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Quick Access Containers */}
-        <View style={styles.quickAccessContainer}>
-          {/* Courts Container */}
-          <TouchableOpacity 
-            style={styles.quickAccessItem}
-            onPress={navigateToCourts}
-          >
-            <View style={styles.quickAccessIconContainer}>
-              <Text style={styles.quickAccessIcon}>🏸</Text>
-            </View>
-            <Text style={styles.quickAccessTitle}>Courts</Text>
-            <Text style={styles.quickAccessSubtitle}>Find nearby courts</Text>
-          </TouchableOpacity>
-
-          {/* Match Container */}
-          <TouchableOpacity 
-            style={styles.quickAccessItem}
-            onPress={navigateToMatch}
-          >
-            <View style={styles.quickAccessIconContainer}>
-              <Text style={styles.quickAccessIcon}>🤝</Text>
-            </View>
-            <Text style={styles.quickAccessTitle}>Match</Text>
-            <Text style={styles.quickAccessSubtitle}>Find players to play with</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Recent Activity Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Recent Activity</Text>
-          <View style={styles.activityItem}>
-            <View style={styles.activityIconContainer}>
-              <Text style={styles.activityIcon}>🏆</Text>
-            </View>
-            <View style={styles.activityContent}>
-              <Text style={styles.activityTitle}>You won a match!</Text>
-              <Text style={styles.activitySubtitle}>vs. John Doe • 2 days ago</Text>
-            </View>
-          </View>
-          <View style={styles.activityItem}>
-            <View style={styles.activityIconContainer}>
-              <Text style={styles.activityIcon}>📍</Text>
-            </View>
-            <View style={styles.activityContent}>
-              <Text style={styles.activityTitle}>You visited a new court</Text>
-              <Text style={styles.activitySubtitle}>Riverside Park • 3 days ago</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Upcoming Matches Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Upcoming Matches</Text>
-          <View style={styles.emptyStateContainer}>
-            <Text style={styles.emptyStateText}>No upcoming matches</Text>
-            <Text style={styles.emptyStateSubtext}>Schedule a match to play with others</Text>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.lightGrey,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   header: {
-    backgroundColor: '#00a859',
-    padding: 20,
-    paddingTop: 50,
+    marginTop: 50,
+    marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  welcomeText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+  searchContainer: {
     flex: 1,
+    marginRight: 10,
   },
-  menuButton: {
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    height: 45,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  searchIcon: {
+    marginRight: 10,
+    fontSize: 22,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: COLORS.clayBrown,
+    paddingVertical: 8,
+  },
+  clearButton: {
     padding: 5,
   },
+  menuButton: {
+    padding: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
   hamburgerIcon: {
-    width: 24,
-    height: 18,
+    width: 22,
+    height: 16,
     justifyContent: 'space-between',
   },
   hamburgerLine: {
     width: '100%',
     height: 2,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.clayBrown,
     borderRadius: 1,
   },
   modalOverlay: {
@@ -212,7 +259,7 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     width: 200,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     marginTop: 90,
     marginRight: 10,
@@ -226,128 +273,95 @@ const styles = StyleSheet.create({
   menuItem: {
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: COLORS.lightGrey,
   },
   menuItemText: {
     fontSize: 16,
-    color: '#333',
+    color: COLORS.grey,
   },
   content: {
     flex: 1,
-  },
-  searchContainer: {
-    padding: 16,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-  searchInput: {
-    flex: 1,
-    padding: 10,
-    fontSize: 16,
-  },
-  searchButton: {
-    padding: 10,
-  },
-  searchButtonText: {
-    fontSize: 18,
+    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0)',
   },
   quickAccessContainer: {
-    flexDirection: 'row',
     padding: 16,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 40,
+    flex: 1,
   },
   quickAccessItem: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 8,
-    elevation: 2,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 16,
+    padding: 24,
+    width: '85%',
+    elevation: 3,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    alignItems: 'center',
   },
   quickAccessIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#f0f0f0',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
   },
-  quickAccessIcon: {
-    fontSize: 24,
+  quickAccessIconShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 3,
   },
   quickAccessTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 8,
+    color: '#4A3C31',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   quickAccessSubtitle: {
-    fontSize: 14,
-    color: '#666',
-  },
-  sectionContainer: {
-    padding: 16,
-    backgroundColor: 'white',
-    marginTop: 16,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  activityItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  activityIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  activityIcon: {
-    fontSize: 20,
-  },
-  activityContent: {
-    flex: 1,
-  },
-  activityTitle: {
     fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 2,
+    fontWeight: '600',
+    color: '#4A3C31',
+    opacity: 0.9,
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
-  activitySubtitle: {
-    fontSize: 14,
-    color: '#666',
-  },
-  emptyStateContainer: {
+  welcomeContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 20,
     alignItems: 'center',
-    padding: 20,
+    borderWidth: 0,
+    elevation: 0,
   },
-  emptyStateText: {
+  welcomeText: {
+    fontSize: 28,
+    fontWeight: '600',
+    color: COLORS.clayBrown,
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+  },
+  betaText: {
     fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 4,
-  },
-  emptyStateSubtext: {
-    fontSize: 14,
-    color: '#666',
+    fontStyle: 'italic',
+    color: COLORS.clayBrown,
+    opacity: 1,
+    marginTop: -2,
   },
 });
 

@@ -11,4 +11,7 @@ export type TabParamList = {
   ProfileTab: {
     user: User;
   };
+  MatchTab: {
+    user: User;
+  };
 }; 

@@ -16,6 +16,7 @@ import { RouteProp } from '@react-navigation/native';
 import { MainStackParamList } from '../navigation/MainNavigator';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { COLORS } from '../constants/colors';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, 'SignUp'>;
@@ -96,12 +97,12 @@ const SignUpScreen = (props: SignUpScreenProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>Create Account</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Create Account</Text>
           <Text style={styles.subtitle}>Join SportSync today</Text>
         </View>
 
-        <View style={styles.formContainer}>
+        <View style={styles.form}>
           <Text style={styles.label}>Full Name</Text>
           <TextInput
             style={[styles.input, errors.name ? styles.inputError : null]}
@@ -144,21 +145,21 @@ const SignUpScreen = (props: SignUpScreenProps) => {
           {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
           
           <TouchableOpacity
-            style={[styles.button, loading && styles.buttonDisabled]}
+            style={[styles.signUpButton, loading && styles.buttonDisabled]}
             onPress={handleSignUp}
             disabled={loading}
           >
             {loading ? (
               <ActivityIndicator color="white" size="small" />
             ) : (
-              <Text style={styles.buttonText}>Create Account</Text>
+              <Text style={styles.signUpButtonText}>Create Account</Text>
             )}
           </TouchableOpacity>
           
-          <View style={styles.signInContainer}>
-            <Text style={styles.signInText}>Already have an account?</Text>
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Already have an account?</Text>
             <TouchableOpacity onPress={handleSignIn}>
-              <Text style={styles.signInLink}>Sign In</Text>
+              <Text style={styles.loginLink}>Sign In</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -170,29 +171,31 @@ const SignUpScreen = (props: SignUpScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.white,
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  header: {
+    backgroundColor: COLORS.sageGreen,
     padding: 20,
     paddingTop: 60,
-  },
-  headerContainer: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 28,
+  headerText: {
+    color: COLORS.white,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#1e88e5',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.white,
+    opacity: 0.9,
   },
-  formContainer: {
-    width: '100%',
+  form: {
+    padding: 20,
   },
   label: {
     fontSize: 16,
@@ -200,25 +203,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.lightGrey,
     borderRadius: 8,
     padding: 15,
-    marginBottom: 16,
+    marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#ddd',
-    fontSize: 16,
+    borderColor: 'rgba(164, 117, 81, 0.3)',
   },
   inputError: {
     borderColor: '#ff6b6b',
   },
   errorText: {
     color: '#ff6b6b',
-    marginTop: -12,
-    marginBottom: 12,
-    fontSize: 14,
+    marginBottom: 10,
+    textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#1e88e5',
+  signUpButton: {
+    backgroundColor: COLORS.clayBrown,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -227,23 +228,23 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     backgroundColor: '#90caf9',
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+  signUpButtonText: {
+    color: COLORS.white,
     fontSize: 16,
+    fontWeight: 'bold',
   },
-  signInContainer: {
+  loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 20,
   },
-  signInText: {
-    color: '#666',
-    marginRight: 5,
+  loginText: {
+    color: COLORS.grey,
   },
-  signInLink: {
-    color: '#1e88e5',
+  loginLink: {
+    color: COLORS.clayBrown,
     fontWeight: 'bold',
+    marginLeft: 5,
   },
 });
 

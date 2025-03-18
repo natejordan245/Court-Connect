@@ -20,6 +20,7 @@ import { Court } from '../types/Court';
 import { addCourt } from '../services/courtService';
 import { getData, storeData } from '../utils/storage';
 import * as ImagePicker from 'expo-image-picker';
+import { COLORS } from '../constants/colors';
 
 type AddCourtScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, 'AddCourt'>;
@@ -272,10 +273,10 @@ const AddCourtScreen = (props: AddCourtScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.lightGrey,
   },
   header: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     padding: 20,
     paddingTop: 50,
     flexDirection: 'row',
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -321,13 +322,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(139, 168, 136, 0.1)',
     borderRadius: 8,
     padding: 12,
-    borderWidth: 1,
-    borderColor: '#ddd',
     marginBottom: 16,
-    fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(164, 117, 81, 0.3)',
+    color: COLORS.grey,
   },
   inputError: {
     borderColor: '#ff6b6b',
@@ -375,18 +376,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.clayBrown,
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
   },
   submitButtonDisabled: {
     backgroundColor: '#90caf9',
   },
   submitButtonText: {
-    color: 'white',
-    fontSize: 18,
+    color: COLORS.white,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

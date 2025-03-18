@@ -18,6 +18,7 @@ import { getPrivateCourts } from '../services/courtService';
 import { getNearbyPickleballCourts } from '../services/googleMapsService';
 import { getData } from '../utils/storage';
 import CourtsMap from '../components/CourtsMap';
+import { COLORS } from '../constants/colors';
 
 type CourtsScreenProps = {
   navigation: NativeStackNavigationProp<TabParamList, 'CourtsTab'>;
@@ -306,24 +307,24 @@ const CourtsScreen = (props: CourtsScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.lightGrey,
   },
   header: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     padding: 20,
     paddingTop: 50,
   },
   headerTitle: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
   toggleContainer: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: 'rgba(164, 117, 81, 0.3)',
   },
   toggleButton: {
     flex: 1,
@@ -332,22 +333,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toggleButtonActive: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
   },
   toggleText: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
   },
   toggleTextActive: {
-    color: 'white',
+    color: COLORS.white,
     fontWeight: 'bold',
   },
   viewToggleContainer: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: 'rgba(164, 117, 81, 0.3)',
   },
   viewToggleButton: {
     flex: 1,
@@ -356,14 +357,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewToggleButtonActive: {
-    backgroundColor: '#e3f2fd',
+    backgroundColor: 'rgba(139, 168, 136, 0.2)',
   },
   viewToggleText: {
     fontSize: 14,
-    color: '#666',
+    color: COLORS.grey,
   },
   viewToggleTextActive: {
-    color: '#1e88e5',
+    color: COLORS.sageGreen,
     fontWeight: 'bold',
   },
   listContainer: {
@@ -373,7 +374,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   courtItem: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
@@ -382,6 +383,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
+    borderWidth: 1,
+    borderColor: 'rgba(164, 117, 81, 0.3)',
   },
   courtImage: {
     width: '100%',
@@ -392,13 +395,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
   },
   privateText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -409,10 +412,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
+    color: COLORS.clayBrown,
   },
   courtAddress: {
     fontSize: 14,
-    color: '#666',
+    color: COLORS.grey,
     marginBottom: 8,
   },
   courtDetails: {
@@ -422,7 +426,7 @@ const styles = StyleSheet.create({
   },
   courtDistance: {
     fontSize: 14,
-    color: '#666',
+    color: COLORS.grey,
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -432,6 +436,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginRight: 2,
+    color: COLORS.clayBrown,
   },
   ratingStar: {
     color: '#ffc107',
@@ -439,12 +444,12 @@ const styles = StyleSheet.create({
   },
   costText: {
     fontSize: 14,
-    color: '#4caf50',
+    color: COLORS.sageGreen,
     marginBottom: 4,
   },
   membershipText: {
     fontSize: 14,
-    color: '#f57c00',
+    color: COLORS.clayBrown,
     marginBottom: 4,
   },
   busynessBadge: {
@@ -455,14 +460,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   busyBadge: {
-    backgroundColor: '#ffebee',
+    backgroundColor: 'rgba(255, 99, 71, 0.1)',
   },
   notBusyBadge: {
-    backgroundColor: '#e8f5e9',
+    backgroundColor: 'rgba(139, 168, 136, 0.1)',
   },
   busynessText: {
     fontSize: 12,
     fontWeight: '500',
+    color: COLORS.grey,
   },
   loadingContainer: {
     flex: 1,
@@ -472,7 +478,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
   },
   errorContainer: {
     flex: 1,
@@ -482,18 +488,18 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
     textAlign: 'center',
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -505,18 +511,18 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
     textAlign: 'center',
     marginBottom: 16,
   },
   addButton: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
   },
   addButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -527,7 +533,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
@@ -537,7 +543,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   floatingButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: 'bold',
   },

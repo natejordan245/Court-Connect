@@ -17,6 +17,7 @@ import { getUserProfile, updateUserProfile } from '../services/userService';
 import { signOut } from 'firebase/auth';
 import { UserProfile } from '../types/User';
 import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from '../constants/colors';
 
 type ProfileScreenProps = {
   navigation: NativeStackNavigationProp<TabParamList, 'ProfileTab'>;
@@ -189,10 +190,10 @@ const ProfileScreen = (props: ProfileScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.lightGrey,
   },
   header: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     height: 120,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
@@ -204,9 +205,9 @@ const styles = StyleSheet.create({
   profileSection: {
     alignItems: 'center',
     paddingVertical: 20,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: 'rgba(164, 117, 81, 0.3)',
   },
   profileImage: {
     width: 120,
@@ -214,33 +215,34 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     marginTop: -60,
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: COLORS.white,
   },
   name: {
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 12,
+    color: COLORS.clayBrown,
   },
   location: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
     marginTop: 4,
   },
   editButton: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
     marginTop: 16,
   },
   editButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: '500',
   },
   statsSection: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     paddingVertical: 20,
     marginTop: 12,
   },
@@ -251,19 +253,19 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1e88e5',
+    color: COLORS.clayBrown,
   },
   statLabel: {
     fontSize: 14,
-    color: '#666',
+    color: COLORS.grey,
     marginTop: 4,
   },
   statDivider: {
     width: 1,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'rgba(164, 117, 81, 0.3)',
   },
   infoSection: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     padding: 20,
     marginTop: 12,
   },
@@ -274,7 +276,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
-    color: '#333',
+    color: COLORS.grey,
     marginLeft: 12,
   },
   bioSection: {
@@ -284,10 +286,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: COLORS.clayBrown,
   },
   bioText: {
     fontSize: 16,
-    color: '#333',
+    color: COLORS.grey,
     lineHeight: 24,
   },
   signOutButton: {
@@ -298,7 +301,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signOutButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -315,18 +318,18 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.grey,
     textAlign: 'center',
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: COLORS.sageGreen,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
