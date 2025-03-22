@@ -9,6 +9,59 @@ The app is currently being designed for pickleball, but we plan to expand into o
 
 This version is mainly using mock data for the posts, courts, and users, but we plan to work on some of the backend logic, then launch the app with real user's data.
 
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- React Native development environment setup
+- iOS Simulator (for Mac users) or Android Studio (for Android development)
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/natejordan245/Court-Connect.git
+cd Court-Connect
+```
+
+2. Install dependencies
+```bash
+npm install
+# or if using yarn
+yarn install
+```
+
+3. Install iOS dependencies (Mac users only)
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### Running the App
+
+For iOS:
+```bash
+npm run ios
+# or
+yarn ios
+```
+
+For Android:
+```bash
+npm run android
+# or
+yarn android
+```
+
+For development:
+```bash
+npm start
+# or
+yarn start
+```
+
 Below is the documentation, which will be written in a way such that any user, whether they are a human or an AI agent, can read this readme and know how to interact with the codebase.
 
 # Project Structure
