@@ -11,7 +11,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Image
+  Image,
+  ImageBackground
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
@@ -144,139 +145,153 @@ const AddCourtScreen = (props: AddCourtScreenProps) => {
   };
 
   return (
-    <KeyboardAvoidingView 
+    <ImageBackground 
+      source={require('../../assets/pickleball-on-court.jpg')}
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      resizeMode="cover"
     >
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Add Private Court</Text>
-        <View style={styles.headerRight} />
-      </View>
+      <View style={styles.overlay}>
+        <KeyboardAvoidingView 
+          style={styles.keyboardView}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <Text style={styles.backButtonText}>←</Text>
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Add Private Court</Text>
+            <View style={styles.headerRight} />
+          </View>
 
-      <ScrollView style={styles.formContainer} contentContainerStyle={styles.formContent}>
-        <Text style={styles.sectionTitle}>Court Information</Text>
-        
-        <Text style={styles.label}>Court Name*</Text>
-        <TextInput
-          style={[styles.input, errors.name ? styles.inputError : null]}
-          value={name}
-          onChangeText={setName}
-          placeholder="Enter court name"
-        />
-        {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
-        
-        <Text style={styles.label}>Address*</Text>
-        <TextInput
-          style={[styles.input, errors.address ? styles.inputError : null]}
-          value={address}
-          onChangeText={setAddress}
-          placeholder="Enter full address"
-        />
-        {errors.address ? <Text style={styles.errorText}>{errors.address}</Text> : null}
-        
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Describe the court (surface type, lighting, etc.)"
-          multiline
-          numberOfLines={4}
-        />
-        
-        <Text style={styles.label}>Court Image</Text>
-        <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
-          {image ? (
-            <Image source={{ uri: image }} style={styles.previewImage} />
-          ) : (
-            <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Tap to add an image</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-        
-        <Text style={styles.sectionTitle}>Access Information</Text>
-        
-        <Text style={styles.label}>Cost per Hour ($)</Text>
-        <TextInput
-          style={[styles.input, errors.cost ? styles.inputError : null]}
-          value={cost}
-          onChangeText={setCost}
-          placeholder="Enter cost (leave blank if free)"
-          keyboardType="numeric"
-        />
-        {errors.cost ? <Text style={styles.errorText}>{errors.cost}</Text> : null}
-        
-        <View style={styles.switchContainer}>
-          <Text style={styles.label}>Requires Membership</Text>
-          <Switch
-            value={requiresMembership}
-            onValueChange={setRequiresMembership}
-            trackColor={{ false: '#767577', true: '#1e88e5' }}
-            thumbColor={requiresMembership ? '#ffffff' : '#f4f3f4'}
-          />
-        </View>
-        
-        {requiresMembership && (
-          <>
-            <Text style={styles.label}>Membership Details</Text>
+          <ScrollView style={styles.formContainer} contentContainerStyle={styles.formContent}>
+            <Text style={styles.sectionTitle}>Court Information</Text>
+            
+            <Text style={styles.label}>Court Name*</Text>
+            <TextInput
+              style={[styles.input, errors.name ? styles.inputError : null]}
+              value={name}
+              onChangeText={setName}
+              placeholder="Enter court name"
+            />
+            {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
+            
+            <Text style={styles.label}>Address*</Text>
+            <TextInput
+              style={[styles.input, errors.address ? styles.inputError : null]}
+              value={address}
+              onChangeText={setAddress}
+              placeholder="Enter full address"
+            />
+            {errors.address ? <Text style={styles.errorText}>{errors.address}</Text> : null}
+            
+            <Text style={styles.label}>Description</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              value={membershipDetails}
-              onChangeText={setMembershipDetails}
-              placeholder="Describe membership requirements, costs, etc."
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Describe the court (surface type, lighting, etc.)"
               multiline
-              numberOfLines={3}
+              numberOfLines={4}
             />
-          </>
-        )}
-        
-        <Text style={styles.sectionTitle}>Contact Information</Text>
-        
-        <Text style={styles.label}>Phone Number</Text>
-        <TextInput
-          style={styles.input}
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          placeholder="Enter contact phone number"
-          keyboardType="phone-pad"
-        />
-        
-        <Text style={styles.label}>Website</Text>
-        <TextInput
-          style={styles.input}
-          value={website}
-          onChangeText={setWebsite}
-          placeholder="Enter website URL"
-          keyboardType="url"
-        />
-        
-        <TouchableOpacity 
-          style={[styles.submitButton, submitting && styles.submitButtonDisabled]}
-          onPress={handleSubmit}
-          disabled={submitting}
-        >
-          {submitting ? (
-            <ActivityIndicator color="white" size="small" />
-          ) : (
-            <Text style={styles.submitButtonText}>Add Court</Text>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+            
+            <Text style={styles.label}>Court Image</Text>
+            <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.previewImage} />
+              ) : (
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.imagePlaceholderText}>Tap to add an image</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            
+            <Text style={styles.sectionTitle}>Access Information</Text>
+            
+            <Text style={styles.label}>Cost per Hour ($)</Text>
+            <TextInput
+              style={[styles.input, errors.cost ? styles.inputError : null]}
+              value={cost}
+              onChangeText={setCost}
+              placeholder="Enter cost (leave blank if free)"
+              keyboardType="numeric"
+            />
+            {errors.cost ? <Text style={styles.errorText}>{errors.cost}</Text> : null}
+            
+            <View style={styles.switchContainer}>
+              <Text style={styles.label}>Requires Membership</Text>
+              <Switch
+                value={requiresMembership}
+                onValueChange={setRequiresMembership}
+                trackColor={{ false: '#767577', true: '#1e88e5' }}
+                thumbColor={requiresMembership ? '#ffffff' : '#f4f3f4'}
+              />
+            </View>
+            
+            {requiresMembership && (
+              <>
+                <Text style={styles.label}>Membership Details</Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  value={membershipDetails}
+                  onChangeText={setMembershipDetails}
+                  placeholder="Describe membership requirements, costs, etc."
+                  multiline
+                  numberOfLines={3}
+                />
+              </>
+            )}
+            
+            <Text style={styles.sectionTitle}>Contact Information</Text>
+            
+            <Text style={styles.label}>Phone Number</Text>
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              placeholder="Enter contact phone number"
+              keyboardType="phone-pad"
+            />
+            
+            <Text style={styles.label}>Website</Text>
+            <TextInput
+              style={styles.input}
+              value={website}
+              onChangeText={setWebsite}
+              placeholder="Enter website URL"
+              keyboardType="url"
+            />
+            
+            <TouchableOpacity 
+              style={[styles.submitButton, submitting && styles.submitButtonDisabled]}
+              onPress={handleSubmit}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <ActivityIndicator color="white" size="small" />
+              ) : (
+                <Text style={styles.submitButtonText}>Add Court</Text>
+              )}
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightGrey,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  keyboardView: {
+    flex: 1,
   },
   header: {
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
     padding: 20,
     paddingTop: 50,
     flexDirection: 'row',
@@ -322,13 +337,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   input: {
-    backgroundColor: 'rgba(139, 168, 136, 0.1)',
+    backgroundColor: 'rgba(43, 109, 152, 0.1)',
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(164, 117, 81, 0.3)',
-    color: COLORS.grey,
+    borderColor: 'rgba(43, 109, 152, 0.3)',
+    color: COLORS.primary,
   },
   inputError: {
     borderColor: '#ff6b6b',
@@ -376,7 +391,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    backgroundColor: COLORS.clayBrown,
+    backgroundColor: COLORS.secondary,
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',

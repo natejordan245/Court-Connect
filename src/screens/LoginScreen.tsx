@@ -3,18 +3,17 @@ import {
   StyleSheet, 
   View, 
   Text, 
-  TouchableOpacity, 
-  TextInput, 
   Alert,
-  ActivityIndicator,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ImageBackground
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../navigation/MainNavigator';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { COLORS } from '../constants/colors';
+import AuthForm from '../components/AuthForm';
 
 // Uncomment these when ready to use Firebase
 // import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -99,127 +98,54 @@ const LoginScreen = (props: LoginScreenProps) => {
   }, []);
 
   return (
-    <KeyboardAvoidingView
+    <ImageBackground 
+      source={require('../../assets/pickleball-on-court.jpg')}
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      resizeMode="cover"
     >
-      <View style={styles.header}>
-        <Text style={styles.headerText}>SportSync</Text>
-      </View>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <View style={styles.overlay}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Court Connect</Text>
+          </View>
 
-      <View style={styles.form}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={[styles.input, errors.email ? styles.inputError : null]}
-          placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
-        
-        <Text style={styles.label}>Password</Text>
-        <TextInput
-          style={[styles.input, errors.password ? styles.inputError : null]}
-          placeholder="Enter your password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
-        
-        <TouchableOpacity
-          style={[styles.loginButton, loading && styles.loginButtonDisabled]}
-          onPress={handleSignIn}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color={COLORS.white} size="small" />
-          ) : (
-            <Text style={styles.loginButtonText}>Sign In</Text>
-          )}
-        </TouchableOpacity>
-        
-        <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={handleSignUp}>
-            <Text style={styles.signUpLink}>Sign Up</Text>
-          </TouchableOpacity>
+          <AuthForm
+            type="login"
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            loading={loading}
+            errors={errors}
+            onSubmit={handleSignIn}
+            onSwitchAuth={handleSignUp}
+          />
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   header: {
-    backgroundColor: COLORS.sageGreen,
     padding: 20,
     paddingTop: 60,
     alignItems: 'center',
   },
   headerText: {
     color: COLORS.white,
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-  },
-  form: {
-    padding: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    fontWeight: '500',
-  },
-  input: {
-    backgroundColor: COLORS.lightGrey,
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: 'rgba(164, 117, 81, 0.3)',
-  },
-  inputError: {
-    borderColor: '#ff6b6b',
-  },
-  loginButton: {
-    backgroundColor: COLORS.clayBrown,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  loginButtonDisabled: {
-    backgroundColor: COLORS.sageGreen,
-    opacity: 0.7,
-  },
-  loginButtonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  signUpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  signUpText: {
-    color: COLORS.grey,
-  },
-  signUpLink: {
-    color: COLORS.clayBrown,
-    fontWeight: 'bold',
-    marginLeft: 5,
-  },
-  errorText: {
-    color: '#ff6b6b',
-    marginBottom: 10,
-    textAlign: 'center',
   },
 });
 

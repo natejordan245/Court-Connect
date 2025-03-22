@@ -38,7 +38,7 @@ const TabNavigator = ({ route }: TabNavigatorProps) => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          backgroundColor: 'rgba(240, 244, 248, 0.95)',
           height: 75,
           paddingBottom: 15,
           paddingTop: 8,
@@ -49,12 +49,12 @@ const TabNavigator = ({ route }: TabNavigatorProps) => {
           borderRadius: 20,
           borderTopWidth: 0,
           elevation: 4,
-          shadowColor: '#000',
+          shadowColor: COLORS.dark,
           shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.08,
+          shadowOpacity: 0.12,
           shadowRadius: 3,
         },
-        tabBarActiveTintColor: COLORS.sageGreen,
+        tabBarActiveTintColor: COLORS.secondary,
         tabBarInactiveTintColor: COLORS.grey,
         tabBarLabelStyle: {
           fontSize: 12,
@@ -159,7 +159,7 @@ const TabNavigator = ({ route }: TabNavigatorProps) => {
 const styles = {
   activeIcon: {
     transform: [{ scale: 1.1 }],
-    textShadowColor: 'rgba(139, 168, 136, 0.3)',
+    textShadowColor: 'rgba(232, 123, 69, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 3,
   },

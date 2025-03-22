@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Court } from '../types/Court';
+import { mockPrivateCourts } from '../data/mockCourts';
 
 // Collection reference
 const courtsCollection = collection(db, 'courts');
@@ -44,27 +45,9 @@ export const getPublicCourts = async (): Promise<Court[]> => {
 
 // Get private courts for a specific user
 export const getPrivateCourts = async (userId: string): Promise<Court[]> => {
-  try {
-    const q = query(
-      courtsCollection,
-      where('isPrivate', '==', true),
-      where('userId', '==', userId),
-      orderBy('name')
-    );
-    const querySnapshot = await getDocs(q);
-    
-    return querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt ? data.createdAt.toDate() : new Date()
-      } as Court;
-    });
-  } catch (error) {
-    console.error('Error getting private courts:', error);
-    return [];
-  }
+  // TODO: In the next version, this will fetch real data from Firebase
+  // For now, return mock data
+  return mockPrivateCourts;
 };
 
 // Add a new court

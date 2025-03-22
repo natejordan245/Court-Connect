@@ -1,3 +1,11 @@
+/**
+ * Base user interface for the application
+ */
+export interface User {
+  id: string;
+  name: string;
+}
+
 export interface UserProfile {
   uid: string;
   email: string;

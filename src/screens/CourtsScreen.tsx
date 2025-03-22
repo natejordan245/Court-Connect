@@ -8,7 +8,8 @@ import {
   Image, 
   Alert,
   ActivityIndicator,
-  Linking
+  Linking,
+  ImageBackground
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
@@ -170,147 +171,156 @@ const CourtsScreen = (props: CourtsScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Courts</Text>
-      </View>
+    <ImageBackground 
+      source={require('../../assets/pickleball-on-court.jpg')}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Courts</Text>
+        </View>
 
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity 
-          style={[
-            styles.toggleButton, 
-            !showPrivate && styles.toggleButtonActive
-          ]}
-          onPress={() => setShowPrivate(false)}
-        >
-          <Text style={[
-            styles.toggleText,
-            !showPrivate && styles.toggleTextActive
-          ]}>Nearby Parks</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[
-            styles.toggleButton, 
-            showPrivate && styles.toggleButtonActive
-          ]}
-          onPress={() => setShowPrivate(true)}
-        >
-          <Text style={[
-            styles.toggleText,
-            showPrivate && styles.toggleTextActive
-          ]}>Private Courts</Text>
-        </TouchableOpacity>
-      </View>
-
-      {!showPrivate && !loading && !error && !locationPermissionDenied && courts.length > 0 && (
-        <View style={styles.viewToggleContainer}>
+        <View style={styles.toggleContainer}>
           <TouchableOpacity 
             style={[
-              styles.viewToggleButton, 
-              !showMapView && styles.viewToggleButtonActive
+              styles.toggleButton, 
+              !showPrivate && styles.toggleButtonActive
             ]}
-            onPress={() => setShowMapView(false)}
+            onPress={() => setShowPrivate(false)}
           >
             <Text style={[
-              styles.viewToggleText,
-              !showMapView && styles.viewToggleTextActive
-            ]}>List</Text>
+              styles.toggleText,
+              !showPrivate && styles.toggleTextActive
+            ]}>Nearby Parks</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[
-              styles.viewToggleButton, 
-              showMapView && styles.viewToggleButtonActive
+              styles.toggleButton, 
+              showPrivate && styles.toggleButtonActive
             ]}
-            onPress={() => setShowMapView(true)}
+            onPress={() => setShowPrivate(true)}
           >
             <Text style={[
-              styles.viewToggleText,
-              showMapView && styles.viewToggleTextActive
-            ]}>Map</Text>
+              styles.toggleText,
+              showPrivate && styles.toggleTextActive
+            ]}>Private Courts</Text>
           </TouchableOpacity>
         </View>
-      )}
 
-      <View style={styles.listContainer}>
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#1e88e5" />
-            <Text style={styles.loadingText}>Loading courts...</Text>
-          </View>
-        ) : error ? (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{error}</Text>
+        {!showPrivate && !loading && !error && !locationPermissionDenied && courts.length > 0 && (
+          <View style={styles.viewToggleContainer}>
             <TouchableOpacity 
-              style={styles.retryButton}
-              onPress={fetchCourts}
+              style={[
+                styles.viewToggleButton, 
+                !showMapView && styles.viewToggleButtonActive
+              ]}
+              onPress={() => setShowMapView(false)}
             >
-              <Text style={styles.retryButtonText}>Retry</Text>
+              <Text style={[
+                styles.viewToggleText,
+                !showMapView && styles.viewToggleTextActive
+              ]}>List</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[
+                styles.viewToggleButton, 
+                showMapView && styles.viewToggleButtonActive
+              ]}
+              onPress={() => setShowMapView(true)}
+            >
+              <Text style={[
+                styles.viewToggleText,
+                showMapView && styles.viewToggleTextActive
+              ]}>Map</Text>
             </TouchableOpacity>
           </View>
-        ) : locationPermissionDenied && !showPrivate ? (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>
-              Location permission is required to find nearby courts.
-            </Text>
-            <TouchableOpacity 
-              style={styles.retryButton}
-              onPress={handleRetryLocationPermission}
-            >
-              <Text style={styles.retryButtonText}>Grant Permission</Text>
-            </TouchableOpacity>
-          </View>
-        ) : courts.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>
-              {showPrivate 
-                ? "You haven't added any private courts yet."
-                : "No courts found nearby."
-              }
-            </Text>
-            {showPrivate && (
+        )}
+
+        <View style={styles.listContainer}>
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#1e88e5" />
+              <Text style={styles.loadingText}>Loading courts...</Text>
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>{error}</Text>
               <TouchableOpacity 
-                style={styles.addButton}
-                onPress={handleAddPrivateCourt}
+                style={styles.retryButton}
+                onPress={fetchCourts}
               >
-                <Text style={styles.addButtonText}>Add Private Court</Text>
+                <Text style={styles.retryButtonText}>Retry</Text>
               </TouchableOpacity>
-            )}
-          </View>
-        ) : showMapView ? (
-          <CourtsMap 
-            courts={courts}
-            onCourtPress={handleCourtPress}
-          />
-        ) : (
-          <FlatList
-            data={courts}
-            renderItem={renderCourtItem}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-          />
+            </View>
+          ) : locationPermissionDenied && !showPrivate ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>
+                Location permission is required to find nearby courts.
+              </Text>
+              <TouchableOpacity 
+                style={styles.retryButton}
+                onPress={handleRetryLocationPermission}
+              >
+                <Text style={styles.retryButtonText}>Grant Permission</Text>
+              </TouchableOpacity>
+            </View>
+          ) : courts.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>
+                {showPrivate 
+                  ? "You haven't added any private courts yet."
+                  : "No courts found nearby."
+                }
+              </Text>
+              {showPrivate && (
+                <TouchableOpacity 
+                  style={styles.addButton}
+                  onPress={handleAddPrivateCourt}
+                >
+                  <Text style={styles.addButtonText}>Add Private Court</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : showMapView ? (
+            <CourtsMap 
+              courts={courts}
+              onCourtPress={handleCourtPress}
+            />
+          ) : (
+            <FlatList
+              data={courts}
+              renderItem={renderCourtItem}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
+        </View>
+
+        {showPrivate && !loading && !error && (
+          <TouchableOpacity 
+            style={styles.floatingButton}
+            onPress={handleAddPrivateCourt}
+          >
+            <Text style={styles.floatingButtonText}>+</Text>
+          </TouchableOpacity>
         )}
       </View>
-
-      {showPrivate && !loading && !error && (
-        <TouchableOpacity 
-          style={styles.floatingButton}
-          onPress={handleAddPrivateCourt}
-        >
-          <Text style={styles.floatingButtonText}>+</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightGrey,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   header: {
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     padding: 20,
     paddingTop: 50,
   },
@@ -324,7 +334,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(164, 117, 81, 0.3)',
+    borderBottomColor: 'rgba(43, 109, 152, 0.3)',
   },
   toggleButton: {
     flex: 1,
@@ -333,7 +343,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toggleButtonActive: {
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
   },
   toggleText: {
     fontSize: 16,
@@ -348,7 +358,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(164, 117, 81, 0.3)',
+    borderBottomColor: 'rgba(43, 109, 152, 0.3)',
   },
   viewToggleButton: {
     flex: 1,
@@ -357,14 +367,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewToggleButtonActive: {
-    backgroundColor: 'rgba(139, 168, 136, 0.2)',
+    backgroundColor: 'rgba(43, 109, 152, 0.2)',
   },
   viewToggleText: {
     fontSize: 14,
     color: COLORS.grey,
   },
   viewToggleTextActive: {
-    color: COLORS.sageGreen,
+    color: COLORS.primary,
     fontWeight: 'bold',
   },
   listContainer: {
@@ -384,7 +394,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     borderWidth: 1,
-    borderColor: 'rgba(164, 117, 81, 0.3)',
+    borderColor: 'rgba(43, 109, 152, 0.3)',
   },
   courtImage: {
     width: '100%',
@@ -395,7 +405,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
@@ -412,7 +422,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
-    color: COLORS.clayBrown,
+    color: COLORS.secondary,
   },
   courtAddress: {
     fontSize: 14,
@@ -436,7 +446,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginRight: 2,
-    color: COLORS.clayBrown,
+    color: COLORS.secondary,
   },
   ratingStar: {
     color: '#ffc107',
@@ -444,12 +454,12 @@ const styles = StyleSheet.create({
   },
   costText: {
     fontSize: 14,
-    color: COLORS.sageGreen,
+    color: COLORS.primary,
     marginBottom: 4,
   },
   membershipText: {
     fontSize: 14,
-    color: COLORS.clayBrown,
+    color: COLORS.secondary,
     marginBottom: 4,
   },
   busynessBadge: {
@@ -463,7 +473,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 99, 71, 0.1)',
   },
   notBusyBadge: {
-    backgroundColor: 'rgba(139, 168, 136, 0.1)',
+    backgroundColor: 'rgba(43, 109, 152, 0.1)',
   },
   busynessText: {
     fontSize: 12,
@@ -493,7 +503,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
@@ -516,7 +526,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   addButton: {
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
@@ -533,7 +543,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: COLORS.sageGreen,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,

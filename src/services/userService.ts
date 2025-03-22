@@ -1,14 +1,17 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../config/firebase';
 import { UserProfile } from '../types/User';
+import { mockProfiles } from '../data/mockProfiles';
 
 export const getUserProfile = async (userId: string): Promise<UserProfile> => {
-  const docRef = doc(db, 'users', userId);
-  const docSnap = await getDoc(docRef);
-  return docSnap.data() as UserProfile;
+  // In development, return mock data
+  const mockProfile = mockProfiles['default'];
+  return {
+    ...mockProfile,
+    uid: userId,
+    email: 'john.smith@example.com'
+  };
 };
 
 export const updateUserProfile = async (userId: string, data: Partial<UserProfile>): Promise<void> => {
-  const docRef = doc(db, 'users', userId);
-  await updateDoc(docRef, data);
+  // In development, just log the update
+  console.log('Profile update (mock):', data);
 }; 
